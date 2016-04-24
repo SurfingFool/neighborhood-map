@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Neighborhood Map</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/common.css">
+	<script	src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+	<script src="js/practice.js"></script>
+</head>
+
+<body>
+	<div id="container">
+		<div id="mapHeader">
+			<p>Map header</p>
+		</div>
+		<div id="sidebar">
+			<p>Title</p>
+			<input data-bind="submit: search" id="search" class="controls" type="text" placeholder="Search Box">
+			<p>
+				<ul data-bind="foreach: model.locations" id="location-list">
+				</ul>
+			</p>
+		</div>
+		<div id="mapDiv">
+		</div>
+	</div>
+	<script src="js/lib/knockout-3.4.0.js"></script>
+</body>
+</html>	

@@ -1,0 +1,70 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#container {
+	background-color: #999;
+	width: 80%;
+	min-width: 320px;
+	height: 600px;
+	max-width: 1200px;
+	margin: 0 auto;
+	overflow: auto;
+}
+
+#sidebar {
+	width: 25%;
+	background-color: #333;
+	float: right;
+	text-align: center;
+	
+}
+
+#mapHeader {
+	height: 10%;
+	width: 75%;
+	float: left;
+	background-color: #666;
+}
+
+#mapDiv {
+	width: 75%;
+	height: 90%;
+	float: left;
+}
+
+#search {
+	background-color: #fff;
+	font-family: Roboto;
+	font-size: 14px;
+	width: 90%;
+	margin: 0 auto;
+	padding: 0 13px 0 15px;
+}
+
+.controls {
+	margin-top: 10px;
+	margin-left: 15px;
+	border: 1px solid #999;
+	border-radius: 5px;
+	height: 30px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+.placesList {
+	color: #fff;
+	list-style-type: none;
+	margin: 25px 15px;
+	text-align: left;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	padding-bottom: 25px;
+}
