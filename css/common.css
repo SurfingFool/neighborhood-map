@@ -61,10 +61,14 @@ html, body {
 }
 
 ul {
-	margin: 0;
-	padding: 0;
+	color: white;
+	font-family: Arial, sans-serif;
+	
 }
 
 li {
-	padding-bottom: 25px;
+	margin: 5px;
+	padding: 5px 5%;
+	text-align: left;
+	
 }

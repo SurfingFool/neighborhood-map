@@ -6,7 +6,8 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="css/common.css">
 	<script	src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-	<script src="js/practice.js"></script>
+	<script src="js/lib/knockout-3.4.0.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -17,14 +18,13 @@
 		<div id="sidebar">
 			<p>Title</p>
 			<input data-bind="submit: search" id="search" class="controls" type="text" placeholder="Search Box">
-			<p>
-				<ul data-bind="foreach: model.locations" id="location-list">
-				</ul>
-			</p>
+			<div data-bind="text: currentLocation().name"> 
+			</div>
 		</div>
 		<div id="mapDiv">
 		</div>
 	</div>
-	<script src="js/lib/knockout-3.4.0.js"></script>
+	
+	<script src="js/practice.js"></script>
 </body>
 </html>	
