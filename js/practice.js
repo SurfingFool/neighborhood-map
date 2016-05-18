@@ -1,5 +1,5 @@
 /*==== Model ====*/
-var locations = [
+var locations = ko.observableArray([
 	{
 		name : 'Fish House Vera Cruz',
 		lat : 33.136278,
@@ -36,7 +36,7 @@ var locations = [
 		lng : -117.189914,
 		info : 'Specialty Mexican dishes, outdoor patio, and bar.'
 	}
-]
+]);
 
 
 // Class constructor
@@ -49,11 +49,17 @@ var Location = function(data) {
 var locationViewModel = function() {	
 	var self = this;
 
-	var locationItem = locations[0];
+	var locationItem = locations()[0];
+	
 	self.currentLocation = ko.observable(new Location(locationItem));
 
 	console.log(self.currentLocation());
 	console.log(self.currentLocation().name);
+	
+}
+
+
+	
 	
 	//for (i = 0; i < locations.length; i++);
 		//location = locations[i];
@@ -62,7 +68,7 @@ var locationViewModel = function() {
 	// 	places += '<li>' + locations[i].name + '</li>';
 	// }
 	// places += '</ul>'
-}
+
 
 ko.applyBindings(new locationViewModel);
 	
