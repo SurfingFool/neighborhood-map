@@ -18,8 +18,11 @@
 		<div id="sidebar">
 			<p>Title</p>
 			<!--<input data-bind="submit: search" id="search" class="controls" type="text" placeholder="Search Box">-->
-			<ul >
-				<li data-bind="text: currentLocation().name">
+			<ul data-bind="foreach: locations">
+				<li>
+					<div>
+						<span data-bind="text: name"></span>
+					</div>
 				</li> 
 			</ul>
 		</div>

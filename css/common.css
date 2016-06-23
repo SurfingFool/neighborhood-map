@@ -8,7 +8,7 @@ html, body {
 	background-color: #999;
 	width: 80%;
 	min-width: 320px;
-	height: 600px;
+	height: 700px;
 	max-width: 1200px;
 	margin: 0 auto;
 	overflow: auto;
@@ -27,6 +27,7 @@ html, body {
 	width: 75%;
 	float: left;
 	background-color: #666;
+	text-align: center;
 }
 
 #mapDiv {
