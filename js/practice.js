@@ -2,79 +2,80 @@
 function LocationItem(name, lat, lng, info) {
     var self = this;
     
-    self.name = ko.observableArray(name);
+    self.name = name;
     self.lat = lat;
     self.lng = lng;
     self.info = info;
 }
 
+var locations = ko.observableArray()[
+        {name:'Fish House Vera Cruz', location: {lat: 33.136278, lng: -117.188976}, info: 'Delicious fresh fish in a cozy atmosphere.'},
+        {name:'Mama Kats Restaurant', location: {lat: 33.135647, lng: -117.186735}, info: 'Homemade food at reasonable prices.'},
+        {name:'Toms Burger Family Restaurant', location: {lat: 33.132742, lng: -117.194078}, info: 'Burgers, fries, malts and shakes.'},
+        {name:'Elephant Bar', location: {lat: 33.140122, lng: -117.192620}, info: 'A variety of American, Italian, and Mexican cuisine.'},
+        {name:'Nattiya Thai Restaurant', location: {lat: 33.136045, lng: -117.179256}, info: 'Authentic Thai Food and specialty drink bar.'},
+        {name:'Cocina Del Charro', location: {lat: 33.135069, lng: -117.189914}, info: 'Specialty Mexican dishes, outdoor patio, and bar.'}
+];
+
 /*==== View Model ====*/
-function initMap() {
+function viewModel() {
 
-    // locations = [
-    //     ['Fish House Vera Cruz', 33.136278, -117.188976, 'Delicious fresh fish in a cozy atmosphere.'],
-    //     ['Mama Kats Restaurant', 33.135647, -117.186735, 'Homemade food at reasonable prices.'],
-    //     ['Toms Burger Family Restaurant', 33.132742, -117.194078, 'Burgers, fries, malts and shakes.'],
-    //     ['Elephant Bar', 33.140122, -117.192620],
-    //     ['Nattiya Thai Restaurant', 33.136045, -117.179256],
-    //     ['Cocina Del Charro', 33.135069, -117.189914]
-    // ];
+    var self = this;
 
-    locations = [
-        new LocationItem(['Fish House Vera Cruz'], 33.136278, -117.188976, 'Delicious fresh fish in a cozy atmosphere.'),
-        new LocationItem(['Mama Kats Restaurant'], 33.135647, -117.186735, 'Homemade food at reasonable prices.'),
-        new LocationItem(['Toms Burger Family Restaurant'], 33.132742, -117.194078, 'Burgers, fries, malts and shakes.'),
-        new LocationItem(['Elephant Bar'], 33.140122, -117.192620, 'A variety of American, Italian, and Mexican cuisine.'),
-        new LocationItem(['Nattiya Thai Restaurant'], 33.136045, -117.179256, 'Authentic Thai Food and specialty drink bar.'),
-        new LocationItem(['Cocina Del Charro'], 33.135069, -117.189914, 'Specialty Mexican dishes, outdoor patio, and bar.')
-    ];
+    var location = locations.location;
+    var map;
+    var marker;
+    var markers = [];
 
-    
-    // Object that defines map properties.
-    var sanMarcos = {
-        lat: 33.136,
-        lng: -117.189
-    };
-    var mapOptions = {
-        center: sanMarcos,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+    function initMap() {
+        // Object that defines map properties.
+        var mapOptions = {
+            center: {lat: 33.136, lng: -117.189},
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        
+        // Creates map inside #mapDiv element with mapOptions parameters passed to it.
+        map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
-    // Creates map inside #mapDiv element with mapOptions parameters passed to it.
-    var map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
-
-    // Creates the search box, link to UI element, and returns predicted search terms.
-    var input = document.getElementById("search");
-    //var searchBox = new google.maps.places.SearchBox(input);
-
-    // Iterates through array of locations & places each one on the map.
-    for (i = 0; i < locations.length; i++) {
-        var position = new google.maps.LatLng(locations[i][1], locations[i][2]);
-        var marker = new google.maps.Marker({
-            position: position,
-            map: map,
-            title: locations[i][0],
-            clickable: true
-        });
-
-        function addInfoWindow(marker, message) {
-            
-            var infoWindow = new google.maps.InfoWindow({
-              content: message
+        // Creates the search box, link to UI element, and returns predicted search terms.
+        // var input = document.getElementById("search");
+        // var searchBox = new google.maps.places.SearchBox(input);
+        var smallInfoWindow = new google.maps.InfoWindow();
+        // Markers.  Iterates through array of locations & places each one on the map.
+        for (i = 0; i < locations.length; i++) {
+            var position = locations[i].location;
+            var title = locations[i].name;
+            marker = new google.maps.Marker({
+                // map: map,  // moved inside showListings function
+                position: position,
+                title: title,
+                clickable: true,
+                animation: google.maps.Animation.DROP,
+                id: i
             });
+            markers.push(marker);
 
-            google.maps.event.addListener(marker, 'click', function() {
-                infoWindow.open(map, marker);
-            });
+            marker.addListener('click', function() {
+                    populateInfoWindow(this, smallInfoWindow);
+            })
 
-        } // End of addInfoWindow()
-        addInfoWindow(marker, locations[i][3]);
-
-    }
-} // End of initMap()
-
+        function addInfoWindow(marker, infowindow) {
+            // Check to make sure the infowindow is not already opened on this marker.
+            if (infowindow.marker != marker) {
+                infowindow.marker = marker;
+                infowindow.setContent('<div>' + marker.name + '</div>');
+                infowindow.open(map, marker);
+                // Make sure the marker property is cleared if the infowindow is closed.
+                infowindow.addListener('closeclick',function(){
+                    infowindow.setMarker(null);
+                });
+            }
+        }
+    } // End of initMap()
+    initMap();
+}
 // Invokes initMap function on window load to render map.
-google.maps.event.addDomListener(window, 'load', initMap);    
+// google.maps.event.addDomListener(window, 'load', initMap);    
    
-ko.applyBindings(new initMap());    
+ko.applyBindings(new viewModel());    
