@@ -21,7 +21,7 @@
 			<!--<input data-bind="submit: search" id="search" class="controls" type="text" placeholder="Search Box">-->
 			<ul id="listItems" data-bind="foreach: locationsObservableArray">
 				<li>
-					<a href="" data-bind="text: name", "click: $parent.createMarkers"></a>
+					<a id="listElem" href="" data-bind="text: name, click: $parent.listItemClick"></a>
 				</li> 
 			</ul>
 		</div>

@@ -132,7 +132,7 @@ function populateInfoWindow(location) {
     // Check to make sure the infowindow is not already open on this marker.
     if (infowindow.marker != location) {
         infowindow.marker = location;
-        infowindow.setContent('<div class="locationTitle">' + location.name + '<div>' + location.info + '</div>' + '</div>');
+        infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">' + location.info + '</div>' + '</div>');
         infowindow.open(map, location.marker);
         // Make sure the marker property is cleared if the infowindow is closed.
         // infowindow.addListener('closeclick',function(){
@@ -159,11 +159,30 @@ function viewModel() {
         self.locationsObservableArray.push(place);
     }
 
+
+    self.listItemClick = function(location) {
+        google.maps.event.trigger(this.location, 'click');
+    };
+    // Event listener when list item is clicked and creates info window.
+    // var elem = document.getElementById("listElem");
+    
+    // self.listItemClick = function(location) {
+    //     elem.addEventListener('click', (function(location) {
+    //         return function() {
+    //             console.log(location);
+    //             // execute 'populateInfoWindow' and pass on the 'location' parameter
+    //             populateInfoWindow(location);
+    //         };
+    //     })(location));
+    // }
+        
+
+
     // Observable to store the search input value
     // This can be bound to the DOM using either the 'value' or 'textInput' binding
     self.searchTerm = ko.observable();
 
-    // Creates the search box, link to UI element, and returns predicted search terms.
+    // Create the search box, link to UI element, and returns predicted search terms.
     // var input = document.getElementById("search");
     // var searchBox = new google.maps.places.SearchBox(input);
     self.search = function() {
