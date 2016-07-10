@@ -60,9 +60,10 @@ var initialLocations = [
 
 var map;
 var infowindow;
+var service;  // If using google.maps.places.PlacesService().
 
 // This is the Google Maps API callback function
-// It will be automatically executed when the Google Maps API finishes loading
+// automatically executed when the Google Maps API finishes loading.
 // This is done by adding 'callback=initMap' to the script tag in the HTML file
 function initMap() {
     // Object that defines map properties.
@@ -75,10 +76,16 @@ function initMap() {
     // Creates map inside #mapDiv element with mapOptions parameters passed to it.
     map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
-    // Create Google Infowindow - empty until window is populated with another function.
+    // Create Google Infowindow object (just one) - empty until window is populated with another function.
     infowindow = new google.maps.InfoWindow({
         maxWidth: 200
     });
+
+    var searchBox = new google.maps.places.SearchBox(input);
+
+    // var bounds = new google.maps.LatLngBounds();
+    
+    
 
     // Initializes function to create Map Markers
     createMarkers();
@@ -115,9 +122,23 @@ function createMarkers() {
                 console.log(location);
                 // execute 'populateInfoWindow' and pass on the 'location' parameter
                 populateInfoWindow(location);
+            
+                toggleBounce(location);
             };
+            
         })(location));
         
+    }
+}
+
+function toggleBounce(location) {
+    if (location.marker.getAnimation() !== null) {
+        location.marker.setAnimation(null);
+    } else {
+        location.marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            location.marker.setAnimation(null);
+        }, 1400);
     }
 }
 
@@ -134,11 +155,7 @@ function populateInfoWindow(location) {
         infowindow.marker = location;
         infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">' + location.info + '</div>' + '</div>');
         infowindow.open(map, location.marker);
-        // Make sure the marker property is cleared if the infowindow is closed.
-        // infowindow.addListener('closeclick',function(){
-
-        //     infowindow.setMap(null);
-        // });
+        
     }
 }
 
@@ -159,40 +176,58 @@ function viewModel() {
         self.locationsObservableArray.push(place);
     }
 
-
-    self.listItemClick = function(location) {
-        google.maps.event.trigger(this.location, 'click');
+// Listener when list item is clicked and creates info window.
+    self.listItemClick = function(marker) {
+        console.log(marker);
+        google.maps.event.trigger(this.marker, 'click');
     };
-    // Event listener when list item is clicked and creates info window.
-    // var elem = document.getElementById("listElem");
     
-    // self.listItemClick = function(location) {
-    //     elem.addEventListener('click', (function(location) {
-    //         return function() {
-    //             console.log(location);
-    //             // execute 'populateInfoWindow' and pass on the 'location' parameter
-    //             populateInfoWindow(location);
-    //         };
-    //     })(location));
-    // }
-        
-
-
     // Observable to store the search input value
     // This can be bound to the DOM using either the 'value' or 'textInput' binding
     self.searchTerm = ko.observable();
 
     // Create the search box, link to UI element, and returns predicted search terms.
-    // var input = document.getElementById("search");
+    
     // var searchBox = new google.maps.places.SearchBox(input);
-    self.search = function() {
+    // Create the search box and link it to UI element.
+    var searchInput = document.getElementById('input');
+    
+    
+
+    // Bias SearchBox results towards current map's viewport.
+    // map.addListener('bounds_changed', function() {
+    //     searchBox.setBounds(map.getBounds());
+    // });
+
+    // searchBox.addListener('places_changed', function() {
+    //     var places = searchBox.getPlaces();
+
+    //     if (places.length == 0) {
+    //         return;
+    //     }
+
+        //  Clear out old markers.
+        // location.forEach(function(marker) {
+        //     marker.setMap(null);
+        // });
+
+        
+
+    // });
+    // map.fitBounds(bounds);
+
+    // self.search = function() {
         // filter list items & map markers
+        
+
         /*for all location:
             if the location name contains the filter (self.searchTerm):
                 show the location
             else
                 hide the location*/
-    };
+    // };
+
+    
 }
 
 // Assign viewModel to a global variable.

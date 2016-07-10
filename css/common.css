@@ -32,17 +32,18 @@ html, body {
 
 #mapDiv {
 	width: 75%;
-	height: 90%;
+	height: 100%;
 	float: left;
 }
 
-#search {
+#input {
 	background-color: #fff;
 	font-family: Roboto;
-	font-size: 14px;
-	width: 90%;
+	font-size: 15px;
+	width: 80%;
+	max-width: 300px;
 	margin: 0 auto;
-	padding: 0 13px 0 15px;
+	padding: 0 11px 0 13px;
 }
 
 .controls {
@@ -50,10 +51,12 @@ html, body {
 	margin-left: 15px;
 	border: 1px solid #999;
 	border-radius: 5px;
-	height: 30px;
+	height: 32px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
+
 .placesList {
 	color: #fff;
 	list-style-type: none;
@@ -93,4 +96,9 @@ a {
 	margin-left: 5%;
 	padding-left: 0;
 	text-decoration: none;
+}
+
+p, h1, h2, h3 {
+	font-family: Arial, sans-serif;
+	color: #fff;
 }
