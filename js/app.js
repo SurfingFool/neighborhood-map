@@ -1,5 +1,5 @@
 // Class Constructor
-function LocationItem (place) {
+function LocationItem(place) {
     var self = this;
 
     self.name = place.name;
@@ -7,90 +7,105 @@ function LocationItem (place) {
     self.info = place.info;
 }
 
-var initialLocations = [
-    {
-        name:'Fish House Vera Cruz',
-        location: {
-            lat: 33.136278,
-            lng: -117.188976
-        },
-        info: 'Delicious fresh fish in a cozy atmosphere.'
+var initialLocations = [{
+    name: 'Fish House Vera Cruz',
+    location: {
+        lat: 33.136278,
+        lng: -117.188976
     },
-    {
-        name:'Mama Kats Restaurant',
-        location: {
-            lat: 33.135647,
-            lng: -117.186735
-        },
-        info: 'Homemade food at reasonable prices.'
+    info: 'Delicious fresh fish in a cozy atmosphere.'
+}, {
+    name: 'Mama Kats Restaurant',
+    location: {
+        lat: 33.135647,
+        lng: -117.186735
     },
-	{
-		name:'Toms Burger Family Restaurant',
-		location: {
-			lat: 33.132742,
-			lng: -117.194078
-		},
-		info: 'Burgers, fries, malts and shakes.'
-	},
-    {
-		name:'Elephant Bar',
-		location: {
-			lat: 33.140122,
-			lng: -117.192620
-		},
-		info: 'A variety of American, Italian, and Mexican cuisine.'
-	},
-    {
-		name:'Nattiya Thai Restaurant',
-		location: {
-			lat: 33.136045,
-			lng: -117.179256
-		},
-		info: 'Authentic Thai Food and specialty drink bar.'
-	},
-    {
-		name:'Cocina Del Charro',
-		location: {
-			lat: 33.135069,
-			lng: -117.189914
-		},
-		info: 'Specialty Mexican dishes, outdoor patio, and bar.'
-	}
-];
+    info: 'Homemade food at reasonable prices.'
+}, {
+    name: 'Toms Burger Family Restaurant',
+    location: {
+        lat: 33.132742,
+        lng: -117.194078
+    },
+    info: 'Burgers, fries, malts and shakes.'
+}, {
+    name: 'Elephant Bar',
+    location: {
+        lat: 33.140122,
+        lng: -117.192620
+    },
+    info: 'A variety of American, Italian, and Mexican cuisine.'
+}, {
+    name: 'Nattiya Thai Restaurant',
+    location: {
+        lat: 33.136045,
+        lng: -117.179256
+    },
+    info: 'Authentic Thai Food and specialty drink bar.'
+}, {
+    name: 'Cocina Del Charro',
+    location: {
+        lat: 33.135069,
+        lng: -117.189914
+    },
+    info: 'Specialty Mexican dishes, outdoor patio, and bar.'
+}];
 
 var map;
 var infowindow;
-var service;  // If using google.maps.places.PlacesService().
+var service; // If using google.maps.places.PlacesService().
 
 // This is the Google Maps API callback function
 // automatically executed when the Google Maps API finishes loading.
 // This is done by adding 'callback=initMap' to the script tag in the HTML file
 function initMap() {
-    // Object that defines map properties.
-    var mapOptions = {
-        center: {lat: 33.136, lng: -117.189},
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+        // Object that defines map properties.
+        var mapOptions = {
+            center: {
+                lat: 33.136,
+                lng: -117.189
+            },
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
 
-    // Creates map inside #mapDiv element with mapOptions parameters passed to it.
-    map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
+        // Creates map inside #mapDiv element with mapOptions parameters passed to it.
+        map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
-    // Create Google Infowindow object (just one) - empty until window is populated with another function.
-    infowindow = new google.maps.InfoWindow({
-        maxWidth: 200
-    });
+        // Create Google Infowindow object (just one) - empty until window is populated with another function.
+        infowindow = new google.maps.InfoWindow({
+            maxWidth: 200
+        });
 
-    var searchBox = new google.maps.places.SearchBox(input);
+        // var searchBox = new google.maps.places.SearchBox(input);
 
-    // var bounds = new google.maps.LatLngBounds();
-    
-    
+        // var searchOptions = {
+        //     bounds: defaultBounds,
+        //     types: ['establishment']
+        // };
+        // var bounds = new google.maps.LatLngBounds();
 
-    // Initializes function to create Map Markers
-    createMarkers();
+        // service = new google.maps.places.PlacesService(map);
+        // var request = {
+        //     location: new google.maps.LatLng(33.136, -117.189),
+        //     radius: 5000,
+        //     types: ['restaurant']
+        // };
+        // service.textSearch(request, function(results) {
+        //     console.log(results.length);
+        //     for (var i = 0; i < results.length; i++) {
+        //         console.log(results[i].name, results[i].types)
+        //     }
+        // });
 
-} // End of initMap()
+        // var ac = new google.maps.places.Autocomplete(document.getElementById('input'), {
+        //     types: ['establishment']
+        // });
+
+        // Initializes function to create Map Markers
+        createMarkers();
+
+    } // End of initMap()
 
 
 function createMarkers() {
@@ -104,7 +119,7 @@ function createMarkers() {
 
         // Create map marker object
         var newMapMarker = new google.maps.Marker({
-            map: map,  // moved inside showListings function
+            map: map, // moved inside showListings function
             position: location.location,
             title: location.name,
             animation: google.maps.Animation.DROP,
@@ -122,12 +137,12 @@ function createMarkers() {
                 console.log(location);
                 // execute 'populateInfoWindow' and pass on the 'location' parameter
                 populateInfoWindow(location);
-            
+
                 toggleBounce(location);
             };
-            
+
         })(location));
-        
+
     }
 }
 
@@ -136,7 +151,7 @@ function toggleBounce(location) {
         location.marker.setAnimation(null);
     } else {
         location.marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function () {
+        setTimeout(function() {
             location.marker.setAnimation(null);
         }, 1400);
     }
@@ -155,9 +170,27 @@ function populateInfoWindow(location) {
         infowindow.marker = location;
         infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">' + location.info + '</div>' + '</div>');
         infowindow.open(map, location.marker);
-        
+
     }
 }
+
+// This function gets passed the callback method to textSearch() above to handle the results object and
+// ....PlacesServiceStatus response.  DOES NOT WORK!!
+// function callback(results, status) {
+//     if (status == google.maps.places.PlacesServiceStatus.OK) {
+//         for (var i = 0; i < results.length; i++) {
+//             var place = results[i];
+//             location(results[i]);
+//         }
+//     }
+// }
+
+// google.maps.event.addListener(ac, 'place_changed', function() {
+//     var place = ac.getPlace();
+//     console.log(place.formatted_address);
+//     console.log(place.url);
+//     console.log(place.geometry.location);
+// });
 
 /*==== View Model Constructor ====*/
 function viewModel() {
@@ -176,58 +209,33 @@ function viewModel() {
         self.locationsObservableArray.push(place);
     }
 
-// Listener when list item is clicked and creates info window.
+    // Listener when list item is clicked and creates info window.
     self.listItemClick = function(marker) {
         console.log(marker);
         google.maps.event.trigger(this.marker, 'click');
     };
-    
-    // Observable to store the search input value
-    // This can be bound to the DOM using either the 'value' or 'textInput' binding
+
+    // Knockout handles the following filter: an observable to store the search input value
+    // Bound to the DOM using 'textInput' binding
     self.searchTerm = ko.observable();
 
     // Create the search box, link to UI element, and returns predicted search terms.
-    
-    // var searchBox = new google.maps.places.SearchBox(input);
-    // Create the search box and link it to UI element.
-    var searchInput = document.getElementById('input');
-    
-    
 
-    // Bias SearchBox results towards current map's viewport.
-    // map.addListener('bounds_changed', function() {
-    //     searchBox.setBounds(map.getBounds());
-    // });
+    var searchBox = document.getElementById('input');
 
-    // searchBox.addListener('places_changed', function() {
-    //     var places = searchBox.getPlaces();
-
-    //     if (places.length == 0) {
-    //         return;
-    //     }
-
-        //  Clear out old markers.
-        // location.forEach(function(marker) {
-        //     marker.setMap(null);
-        // });
-
-        
-
-    // });
-    // map.fitBounds(bounds);
 
     // self.search = function() {
-        // filter list items & map markers
-        
+    // filter list items & map markers
 
-        /*for all location:
-            if the location name contains the filter (self.searchTerm):
-                show the location
-            else
-                hide the location*/
+
+    /*for all location:
+        if the location name contains the filter (self.searchTerm):
+            show the location
+        else
+            hide the location*/
     // };
 
-    
+
 }
 
 // Assign viewModel to a global variable.
