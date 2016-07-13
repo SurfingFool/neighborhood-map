@@ -54,7 +54,7 @@ var initialLocations = [{
 var map;
 var infowindow;
 var service; // If using google.maps.places.PlacesService().
-
+var searchTerm;
 // This is the Google Maps API callback function
 // automatically executed when the Google Maps API finishes loading.
 // This is done by adding 'callback=initMap' to the script tag in the HTML file
@@ -77,7 +77,7 @@ function initMap() {
             maxWidth: 200
         });
 
-        // var searchBox = new google.maps.places.SearchBox(input);
+        // var searchBox = new google.maps.places.SearchBox();
 
         // var searchOptions = {
         //     bounds: defaultBounds,
@@ -85,23 +85,15 @@ function initMap() {
         // };
         // var bounds = new google.maps.LatLngBounds();
 
-        // service = new google.maps.places.PlacesService(map);
-        // var request = {
-        //     location: new google.maps.LatLng(33.136, -117.189),
-        //     radius: 5000,
-        //     types: ['restaurant']
-        // };
-        // service.textSearch(request, function(results) {
-        //     console.log(results.length);
-        //     for (var i = 0; i < results.length; i++) {
-        //         console.log(results[i].name, results[i].types)
-        //     }
-        // });
-
-        // var ac = new google.maps.places.Autocomplete(document.getElementById('input'), {
-        //     types: ['establishment']
-        // });
-
+        var request = {
+            location: new google.maps.LatLng(33.136, -117.189),
+            radius: 2000,
+            query: 'restaurant'
+        };
+        // request string literal is passed to textSearch method.
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, self.searchTerm/*, callback*/);
+        
         // Initializes function to create Map Markers
         createMarkers();
 
@@ -179,24 +171,19 @@ function populateInfoWindow(location) {
 // function callback(results, status) {
 //     if (status == google.maps.places.PlacesServiceStatus.OK) {
 //         for (var i = 0; i < results.length; i++) {
-//             var place = results[i];
-//             location(results[i]);
+//             newLocations = results[i];
+//             self.locationsObservableArray.push(newLocations);
+//             // createMarkers(results[i]);
 //         }
 //     }
 // }
 
-// google.maps.event.addListener(ac, 'place_changed', function() {
-//     var place = ac.getPlace();
-//     console.log(place.formatted_address);
-//     console.log(place.url);
-//     console.log(place.geometry.location);
-// });
 
 /*==== View Model Constructor ====*/
 function viewModel() {
     var self = this;
 
-    // Creates an empty observable array
+    // Creates an empty observable array.  Also can store returned data from places api.
     self.locationsObservableArray = ko.observableArray();
 
     var place;
@@ -215,18 +202,22 @@ function viewModel() {
         google.maps.event.trigger(this.marker, 'click');
     };
 
-    // Knockout handles the following filter: an observable to store the search input value
-    // Bound to the DOM using 'textInput' binding
-    self.searchTerm = ko.observable();
-
+    // Knockout handles the following filter: an observable to store users search input
+    // Value bound to the DOM using 'textInput' binding and provides string for the
+    // textSearch() method.
+    self.searchTerm = ko.observable(); //  
+    
     // Create the search box, link to UI element, and returns predicted search terms.
+    // var searchBox = document.getElementById('input');
 
-    var searchBox = document.getElementById('input');
-
-
-    // self.search = function() {
+    self.filterSearch = ko.computed(function() {
+        if(!self.searchTerm()) {
+            return self.locationsObservableArray();
+        } else {
+            return ko.utils.arrayFilter(self.locationsObservableArray());
+        }
+    });
     // filter list items & map markers
-
 
     /*for all location:
         if the location name contains the filter (self.searchTerm):
@@ -235,12 +226,10 @@ function viewModel() {
             hide the location*/
     // };
 
-
 }
 
-// Assign viewModel to a global variable.
-// This creates a new viewModel object and stores it inside the 'vm' variable
-// in order to access viewModel variables using dot notation
-// Ex: vm.locationsObservableArray()
+// Assign viewModel to a global variable. This creates a new viewModel object and stores
+// it inside the 'vm' variable in order to access viewModel variables using dot notation
+// Example: vm.locationsObservableArray()
 var vm = new viewModel();
 ko.applyBindings(vm);
