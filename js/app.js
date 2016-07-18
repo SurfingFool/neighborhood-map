@@ -1,10 +1,9 @@
 // Class Constructor
 function LocationItem(place) {
-    var self = this;
 
-    self.name = place.name;
-    self.location = place.location;
-    self.info = place.info;
+    this.name = place.name;
+    this.location = place.location;
+    this.info = place.info;
 }
 
 var initialLocations = [{
@@ -59,24 +58,26 @@ var searchTerm;
 // automatically executed when the Google Maps API finishes loading.
 // This is done by adding 'callback=initMap' to the script tag in the HTML file
 function initMap() {
-        // Object that defines map properties.
-        var mapOptions = {
-            center: {
-                lat: 33.136,
-                lng: -117.189
-            },
-            zoom: 15,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+    // Object that defines map properties.
+    var mapOptions = {
+        center: {
+            lat: 33.136,
+            lng: -117.189
+        },
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
 
-        // Creates map inside #mapDiv element with mapOptions parameters passed to it.
-        map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
+    // Creates map inside #mapDiv element with mapOptions parameters passed to it.
+    map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
-        // Create Google Infowindow object (just one) - empty until window is populated with another function.
-        infowindow = new google.maps.InfoWindow({
-            maxWidth: 200
-        });
+    // Create Google Infowindow object (just one) - empty until window is populated with another function.
+    infowindow = new google.maps.InfoWindow({
+        maxWidth: 200
+    });
 
+/************************************************************************************
+    The request code isn't needed unless I want to use Google Places to create my list of locations
         // var searchBox = new google.maps.places.SearchBox();
 
         // var searchOptions = {
@@ -85,19 +86,20 @@ function initMap() {
         // };
         // var bounds = new google.maps.LatLngBounds();
 
-        var request = {
-            location: new google.maps.LatLng(33.136, -117.189),
-            radius: 2000,
-            query: 'restaurant'
-        };
+        // var request = {
+        //     location: new google.maps.LatLng(33.136, -117.189),
+        //     radius: 2000,
+        //     query: 'restaurant'
+        // };
         // request string literal is passed to textSearch method.
-        service = new google.maps.places.PlacesService(map);
-        service.textSearch(request, self.searchTerm/*, callback*/);
+        // service = new google.maps.places.PlacesService(map);
+        // service.textSearch(request, self.searchTerm, callback);
+********************************************************************************/
         
         // Initializes function to create Map Markers
-        createMarkers();
+    createMarkers();
 
-    } // End of initMap()
+} // End of initMap()
 
 
 function createMarkers() {
@@ -153,17 +155,51 @@ function toggleBounce(location) {
 // and opens the infowindow object in this marker location
 // It does not create a new infowindow object
 function populateInfoWindow(location) {
-    // Perform AJAX request here
-    // Display content retreived from third party API
+    // Perform AJAX request.
+    // Display content retreived from third party API.
     // Can break this down into as many functions that makes sense
 
-    // Check to make sure the infowindow is not already open on this marker.
-    if (infowindow.marker != location) {
-        infowindow.marker = location;
-        infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">' + location.info + '</div>' + '</div>');
-        infowindow.open(map, location.marker);
+    
+    // var fsUrl = 'https://api.foursquare.com/v2/venues/search?client_id='+client_id+'&client_secret='+client_secret+'&v=20130815&ll=51.447581,5.457728&radius=500&venuePhotos=1',
+    // var client_id = B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG;
+    // var client_secret = NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L;
+    // // Yelp AJAX request goes here
+    // function getNewVenues () {
+    //     $.ajax({
+    //         // Use this data to update the viewModel, and KO will update UI automatically.
+    //         url: 'fsUrl',
+    //         data: {
+    //             client_id: client_id,
+    //             client_secret: client_secret,
+    //             near: San Marcos, CA,
+    //             limit: 10
+    //         },
+    //         success: function() {
+    //             var venues = response.newVenuesArray()[i];
+    //         }
+    //         error: function() {
 
-    }
+    //         }
+    //     });
+        
+    //     var newLocationData = {
+    //         name: fsResults[newLocations].location.name;
+    //         info: location.info;
+    //     };
+    //     $.each(data, function() {
+    //         items.push();
+    //     })
+    // }
+    
+    // // To send data to the server:
+    // var data = /* My data in JSON format */;
+    // $.post("/some/url", data, function(returnedData) {
+    //     // This callback is executed if the post was successful
+    // })
+
+    infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">' + location.info + '</div>' + '</div>');
+    infowindow.open(map, location.marker); // Opens infowindow as part of this function.
+    
 }
 
 // This function gets passed the callback method to textSearch() above to handle the results object and
@@ -207,24 +243,21 @@ function viewModel() {
     // textSearch() method.
     self.searchTerm = ko.observable(); //  
     
-    // Create the search box, link to UI element, and returns predicted search terms.
-    // var searchBox = document.getElementById('input');
-
     self.filterSearch = ko.computed(function() {
-        if(!self.searchTerm()) {
+        if (!self.searchTerm()) {
             return self.locationsObservableArray();
         } else {
-            return ko.utils.arrayFilter(self.locationsObservableArray());
+            filter = self.searchTerm().toLowerCase();
+            return ko.utils.arrayFilter(self.locationsObservableArray(),
+            function(location) {
+                var match = location.name.toLowerCase().indexOf(filter) > -1;
+                location.marker.setVisible(match);
+                return match;
+            });
         }
     });
-    // filter list items & map markers
-
-    /*for all location:
-        if the location name contains the filter (self.searchTerm):
-            show the location
-        else
-            hide the location*/
-    // };
+    
+    
 
 }
 
