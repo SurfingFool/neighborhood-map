@@ -156,40 +156,47 @@ function toggleBounce(location) {
 // It does not create a new infowindow object
 function populateInfoWindow(location) {
     // Perform AJAX request.
-    // Display content retreived from third party API.
-    // Can break this down into as many functions that makes sense
-
+    // Display content retreived from Foursquare.
     
-    // var fsUrl = 'https://api.foursquare.com/v2/venues/search?client_id='+client_id+'&client_secret='+client_secret+'&v=20130815&ll=51.447581,5.457728&radius=500&venuePhotos=1',
-    // var client_id = B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG;
-    // var client_secret = NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L;
-    // // Yelp AJAX request goes here
-    // function getNewVenues () {
-    //     $.ajax({
-    //         // Use this data to update the viewModel, and KO will update UI automatically.
-    //         url: 'fsUrl',
-    //         data: {
-    //             client_id: client_id,
-    //             client_secret: client_secret,
-    //             near: San Marcos, CA,
-    //             limit: 10
-    //         },
-    //         success: function() {
-    //             var venues = response.newVenuesArray()[i];
-    //         }
-    //         error: function() {
+    var fsUrl = 'https://api.foursquare.com/v2/venues/search?client_id='+client_id+'&near: San Marcos, CA&client_secret='+client_secret+'&v=20130815&ll=51.447581,5.457728&radius=500&venuePhotos=1';
+    var client_id = B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG;
+    var client_secret = NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L;
+    // Yelp AJAX request goes here
+    function getNewVenues () {
+        $.ajax({
+            // Use this data to update the viewModel, and KO will update UI automatically.
+            url: 'fsUrl',
+            data: {
+                client_id: client_id,
+                client_secret: client_secret,
+                
+                limit: 10
+            },
+            success: function() {
+                var newVenues = response.newVenuesArray()[i];
+            }
+            error: function() {
 
-    //         }
-    //     });
+            }
+        });
+    }
         
-    //     var newLocationData = {
-    //         name: fsResults[newLocations].location.name;
-    //         info: location.info;
-    //     };
-    //     $.each(data, function() {
-    //         items.push();
-    //     })
-    // }
+    // This is an object that holds the results data. 
+    var newVenueData = {
+        name: fsResults[newVenues].location.name,
+        info: location.info
+    };
+
+    // The newLocationData is then passed to an observableArray that
+    // is used to populate the info window.
+    var newVenuesArray = [];
+    function newVenueResults(newVenueData) {
+        for (var i = 0; i < newVenuesArray().length; i++) {
+            location.push(newVenueData) // Push to locationsObservableArray
+        }
+        
+    };
+
     
     // // To send data to the server:
     // var data = /* My data in JSON format */;
@@ -201,7 +208,7 @@ function populateInfoWindow(location) {
     infowindow.open(map, location.marker); // Opens infowindow as part of this function.
     
 }
-
+/**************************************
 // This function gets passed the callback method to textSearch() above to handle the results object and
 // ....PlacesServiceStatus response.  DOES NOT WORK!!
 // function callback(results, status) {
@@ -213,7 +220,7 @@ function populateInfoWindow(location) {
 //         }
 //     }
 // }
-
+**************************************/
 
 /*==== View Model Constructor ====*/
 function viewModel() {
@@ -221,6 +228,8 @@ function viewModel() {
 
     // Creates an empty observable array.  Also can store returned data from places api.
     self.locationsObservableArray = ko.observableArray();
+
+    var newVenuesArray = ko.observableArray();
 
     var place;
     // Loop over each initial location object
