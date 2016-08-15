@@ -16,7 +16,7 @@
 		
 		<div id="sidebar">
 			<h3>Popular Places</h3>
-			<input data-bind="textInput: searchTerm" id="input" class="controls" type="text" placeholder="Start typing here"/>
+			<input data-bind="textInput: searchTerm, event: {keyup: " id="input" class="controls" type="text" placeholder="Start typing here"/>
 			<ul id="listItems" data-bind="foreach: filterSearch">
 				<li>
 					<a id="listElem" href="" data-bind="text: name, click: $parent.listItemClick"></a>

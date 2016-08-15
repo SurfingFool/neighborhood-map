@@ -155,33 +155,48 @@ function toggleBounce(location) {
 // and opens the infowindow object in this marker location
 // It does not create a new infowindow object
 function populateInfoWindow(location) {
+    console.log(location);
     // Perform AJAX request.
     // Display content retreived from Foursquare.
     
-    var fsUrl = 'https://api.foursquare.com/v2/venues/search?client_id='+client_id+'&near: San Marcos, CA&client_secret='+client_secret+'&v=20130815&ll=51.447581,5.457728&radius=500&venuePhotos=1';
+    
     var client_id = B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG;
     var client_secret = NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L;
+    var fsUrl = 'https://api.foursquare.com/v2/venues/search?
+    near=San Marcos,CA&v=20130815&ll=51.447581,5.457728&query='+location.name+'&client_id='+client_id+'&client_secret='+client_secret'';
+    
     // Yelp AJAX request goes here
     function getNewVenues () {
         $.ajax({
             // Use this data to update the viewModel, and KO will update UI automatically.
             url: 'fsUrl',
             data: {
-                client_id: client_id,
-                client_secret: client_secret,
-                
                 limit: 10
+                near: San Marcos, CA
             },
-            success: function() {
-                var newVenues = response.newVenuesArray()[i];
-            }
-            error: function() {
+            success: function(result) {
+                console.log(result);
+                if (result.response.venues.length > 0) {
+                    var foursquareLocationObject = result.response.venues[0];
+                    console.log(foursquareLocationObject);
 
+                    infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
+                     + location.info + '</div>' + '</div>');
+                    infowindow.open(map, location.marker); // Opens infowindow as part of this function.        
+                } else {
+                    alert('Sorry, no venues found.');
+                }
+            },
+            error: function(error) {
+                alert('An error has occured.');
             }
+            
         });
     }
+
+    getNewVenues();
         
-    // This is an object that holds the results data. 
+    // This is the object that holds the results data. 
     var newVenueData = {
         name: fsResults[newVenues].location.name,
         info: location.info
@@ -204,8 +219,7 @@ function populateInfoWindow(location) {
     //     // This callback is executed if the post was successful
     // })
 
-    infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">' + location.info + '</div>' + '</div>');
-    infowindow.open(map, location.marker); // Opens infowindow as part of this function.
+    
     
 }
 /**************************************
@@ -253,7 +267,7 @@ function viewModel() {
     self.searchTerm = ko.observable(); //  
     
     self.filterSearch = ko.computed(function() {
-        if (!self.searchTerm()) {
+        if (!self.searchTerm() || self.searchTerm = null) {
             return self.locationsObservableArray();
         } else {
             filter = self.searchTerm().toLowerCase();
@@ -263,7 +277,7 @@ function viewModel() {
                 location.marker.setVisible(match);
                 return match;
             });
-        }
+        } 
     });
     
     
