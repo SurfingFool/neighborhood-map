@@ -76,26 +76,6 @@ function initMap() {
         maxWidth: 200
     });
 
-/************************************************************************************
-    The request code isn't needed unless I want to use Google Places to create my list of locations
-        // var searchBox = new google.maps.places.SearchBox();
-
-        // var searchOptions = {
-        //     bounds: defaultBounds,
-        //     types: ['establishment']
-        // };
-        // var bounds = new google.maps.LatLngBounds();
-
-        // var request = {
-        //     location: new google.maps.LatLng(33.136, -117.189),
-        //     radius: 2000,
-        //     query: 'restaurant'
-        // };
-        // request string literal is passed to textSearch method.
-        // service = new google.maps.places.PlacesService(map);
-        // service.textSearch(request, self.searchTerm, callback);
-********************************************************************************/
-        
         // Initializes function to create Map Markers
     createMarkers();
 
@@ -160,24 +140,27 @@ function populateInfoWindow(location) {
     // Display content retreived from Foursquare.
     
     
-    var client_id = B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG;
-    var client_secret = NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L;
-    var fsUrl = 'https://api.foursquare.com/v2/venues/search?
-    near=San Marcos,CA&v=20130815&ll=51.447581,5.457728&query='+location.name+'&client_id='+client_id+'&client_secret='+client_secret'';
+    var client_id = 'B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG';
+    var client_secret = 'NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L';
+    var fsUrl = 'https://api.foursquare.com/v2/venues/search?' + 
+        'near=San Marcos,CA&v=20130815&ll=51.447581,5.457728&query='
+        + location.name + '&client_id=' + client_id + '&client_secret=' + client_secret;
     
     // Yelp AJAX request goes here
+    var foursquareLocationObject = result.response.venues[0];
+
     function getNewVenues () {
         $.ajax({
             // Use this data to update the viewModel, and KO will update UI automatically.
             url: 'fsUrl',
             data: {
-                limit: 10
-                near: San Marcos, CA
+                limit: 10,
+                near: 'San Marcos, CA'
             },
             success: function(result) {
                 console.log(result);
                 if (result.response.venues.length > 0) {
-                    var foursquareLocationObject = result.response.venues[0];
+                    // var foursquareLocationObject = result.response.venues[0];
                     console.log(foursquareLocationObject);
 
                     infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
@@ -198,7 +181,8 @@ function populateInfoWindow(location) {
         
     // This is the object that holds the results data. 
     var newVenueData = {
-        name: fsResults[newVenues].location.name,
+        // name: fsResults[newVenues].location.name,
+        name: foursquareLocationObject[newVenues].location.name,
         info: location.info
     };
 
@@ -212,29 +196,7 @@ function populateInfoWindow(location) {
         
     };
 
-    
-    // // To send data to the server:
-    // var data = /* My data in JSON format */;
-    // $.post("/some/url", data, function(returnedData) {
-    //     // This callback is executed if the post was successful
-    // })
-
-    
-    
 }
-/**************************************
-// This function gets passed the callback method to textSearch() above to handle the results object and
-// ....PlacesServiceStatus response.  DOES NOT WORK!!
-// function callback(results, status) {
-//     if (status == google.maps.places.PlacesServiceStatus.OK) {
-//         for (var i = 0; i < results.length; i++) {
-//             newLocations = results[i];
-//             self.locationsObservableArray.push(newLocations);
-//             // createMarkers(results[i]);
-//         }
-//     }
-// }
-**************************************/
 
 /*==== View Model Constructor ====*/
 function viewModel() {
@@ -267,21 +229,25 @@ function viewModel() {
     self.searchTerm = ko.observable(); //  
     
     self.filterSearch = ko.computed(function() {
-        if (!self.searchTerm() || self.searchTerm = null) {
+        // If nothing in search box, show all locations.
+        if (!self.searchTerm() || self.searchTerm === undefined) {
             return self.locationsObservableArray();
+            location.marker.setVisible();
         } else {
+            // So input isn't case sensitive.
             filter = self.searchTerm().toLowerCase();
+            // Knockout filters out non-matching locations.
             return ko.utils.arrayFilter(self.locationsObservableArray(),
             function(location) {
                 var match = location.name.toLowerCase().indexOf(filter) > -1;
+                // Set visibilty to true if location matches, false if it doesn't.
                 location.marker.setVisible(match);
+                // If true, location goes into filtered array.
                 return match;
             });
         } 
     });
     
-    
-
 }
 
 // Assign viewModel to a global variable. This creates a new viewModel object and stores
