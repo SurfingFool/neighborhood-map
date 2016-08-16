@@ -163,17 +163,20 @@ function populateInfoWindow(location) {
             // Display content retreived from Foursquare.
             success: function(result) {
                 console.log("result: ", result);
-                foursquareLocationObject = result.response.venues[0];
-                if (result.response.venues.length > 0) {
-                    
-                    console.log(foursquareLocationObject);
+                var category = result.response.venues[0].categories[0].pluralName;
 
+                // foursquareLocationObject = result.response.venues[0];
+                // if (result.response.venues.length > 0) {
+                    
+                //     console.log(foursquareLocationObject);
+                    // Populates content of window with the following:
                     infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
-                     + location.info + '</div>' + '</div>');
-                    infowindow.open(map, location.marker); // Opens infowindow as part of this function.        
-                } else {
-                    alert('Sorry, no venues found.');
-                }
+                     + location.info + '</div>' + category + '</div>');
+                    
+                    infowindow.open(map, location.marker); // Opens infowindow at marker location.        
+                // } else {
+                //     alert('Sorry, no venues found.');
+                // }
             },
             error: function(error) {
                 alert('An error has occured.');
@@ -185,21 +188,21 @@ function populateInfoWindow(location) {
     getNewVenues();
         
     // This is the object that holds the results data. 
-    var newVenueData = {
-        // name: fsResults[newVenues].location.name,
-        name: foursquareLocationObject[newVenuesArray].location.name,
-        info: location.info
-    };
+    // var newVenueData = {
+    //     // name: fsResults[newVenues].location.name,
+    //     name: foursquareLocationObject[newVenuesArray].location.name,
+    //     info: location.info
+    // };
 
-    // The newLocationData is then passed to an observableArray that
-    // is used to populate the info window.
-    var newVenuesArray = [];
-    function newVenueResults(newVenueData) {
-        for (var i = 0; i < newVenuesArray().length; i++) {
-            location.push(newVenueData) // Push to locationsObservableArray
-        }
+    // // The newLocationData is then passed to an observableArray that
+    // // is used to populate the info window.
+    // var newVenuesArray = [];
+    // function newVenueResults(newVenueData) {
+    //     for (var i = 0; i < newVenuesArray().length; i++) {
+    //         location.push(newVenueData) // Push to locationsObservableArray
+    //     }
         
-    };
+    // };
 
 }
 
