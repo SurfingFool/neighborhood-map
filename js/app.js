@@ -136,31 +136,36 @@ function toggleBounce(location) {
 // It does not create a new infowindow object
 function populateInfoWindow(location) {
     console.log(location);
+    
     // Perform AJAX request.
-    // Display content retreived from Foursquare.
-    
-    
     var client_id = 'B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG';
     var client_secret = 'NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L';
-    var fsUrl = 'https://api.foursquare.com/v2/venues/search?' + 
-        'near=San Marcos,CA&v=20130815&ll=51.447581,5.457728&query='
-        + location.name + '&client_id=' + client_id + '&client_secret=' + client_secret;
+    var fsUrl = 'https://api.foursquare.com/v2/venues/search?';
     
-    // Yelp AJAX request goes here
-    var foursquareLocationObject = result.response.venues[0];
-
+    var foursquareLocationObject
+    
     function getNewVenues () {
         $.ajax({
             // Use this data to update the viewModel, and KO will update UI automatically.
-            url: 'fsUrl',
+            url: fsUrl,
+            dataType: 'json',
             data: {
                 limit: 10,
-                near: 'San Marcos, CA'
+                ll: '51.447581,5.457728',
+                query: location.name,
+                client_id: client_id,
+                client_secret: client_secret,
+                v: 20130815,
+                m: 'foursquare',
+                // near: 'San Marcos, CA'
             },
+            async: true,
+            // Display content retreived from Foursquare.
             success: function(result) {
-                console.log(result);
+                console.log("result: ", result);
+                foursquareLocationObject = result.response.venues[0];
                 if (result.response.venues.length > 0) {
-                    // var foursquareLocationObject = result.response.venues[0];
+                    
                     console.log(foursquareLocationObject);
 
                     infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
@@ -182,7 +187,7 @@ function populateInfoWindow(location) {
     // This is the object that holds the results data. 
     var newVenueData = {
         // name: fsResults[newVenues].location.name,
-        name: foursquareLocationObject[newVenues].location.name,
+        name: foursquareLocationObject[newVenuesArray].location.name,
         info: location.info
     };
 
