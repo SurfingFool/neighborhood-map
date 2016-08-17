@@ -140,7 +140,7 @@ function populateInfoWindow(location) {
     // Perform AJAX request.
     var client_id = 'B0RZKSFFOY4MZXDOVQ1K2ZISI2LIYBO1H1YVMR4SIGDH5LZG';
     var client_secret = 'NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L';
-    var fsUrl = 'https://api.foursquare.com/v2/venues/search?';
+    var fsUrl = 'https://api.foursquare.com/v2/venues/search';
     
     var foursquareLocationObject
     
@@ -163,7 +163,11 @@ function populateInfoWindow(location) {
             // Display content retreived from Foursquare.
             success: function(result) {
                 console.log("result: ", result);
-                var category = result.response.venues[0].categories[0].pluralName;
+                // $results = file_get_contents(fsUrl);
+                // $json_results = json_decode($results,true);
+                // $venues = $json_results['response']['venues'];
+
+                var venues = result.response.venues.address;
 
                 // foursquareLocationObject = result.response.venues[0];
                 // if (result.response.venues.length > 0) {
@@ -171,7 +175,7 @@ function populateInfoWindow(location) {
                 //     console.log(foursquareLocationObject);
                     // Populates content of window with the following:
                     infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
-                     + location.info + '</div>' + category + '</div>');
+                     + location.info + '</div>' + venues + '</div>');
                     
                     infowindow.open(map, location.marker); // Opens infowindow at marker location.        
                 // } else {
