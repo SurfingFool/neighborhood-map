@@ -151,8 +151,8 @@ function populateInfoWindow(location) {
             url: fsUrl,
             dataType: 'json',
             data: {
-                limit: 10,
-                ll: '51.447581,5.457728',
+                limit: 15,
+                ll: '33.136,-117.189',
                 query: location.name,
                 client_id: client_id,
                 client_secret: client_secret,
