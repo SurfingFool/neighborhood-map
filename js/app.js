@@ -147,6 +147,7 @@ function populateInfoWindow(location) {
     function getNewVenues () {
         $.ajax({
             // Use this data to update the viewModel, and KO will update UI automatically.
+            
             url: fsUrl,
             dataType: 'json',
             data: {
@@ -162,24 +163,61 @@ function populateInfoWindow(location) {
             async: true,
             // Display content retreived from Foursquare.
             success: function(result) {
-                console.log("result: ", result);
-                // $results = file_get_contents(fsUrl);
-                // $json_results = json_decode($results,true);
-                // $venues = $json_results['response']['venues'];
+                console.log(result);
+                
+                for (var venue in result.response.venues) {
+                    var address = result.response.venues[venue].location;
+                    if(result.response.venues.hasOwnProperty(venue)) {
+                        var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">'
+                        + location.info + '</div>' + address + '</div>';
 
-                var venues = result.response.venues.address;
+                        infowindow.setContent(infoWindowContent);
+                        infowindow.open(map,location.marker);
+                    }
+                }
+
+                // if (result.response.venues.length > 0) {
+                //     var address = result.response.venues[0].address;
+
+                //     var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">'
+                //         + location.info + '</div>' + address + '</div>';
+
+                //     infowindow.setContent(infoWindowContent);
+                //     infowindow.open(map,location.marker);
+                // } else {
+                //         alert('Sorry, no address found.');
+                //     }
+
+
+                // var venues = result.response.hasOwnProperty('venues');
+                // var address = result.response.venues.address;
+                
+                // $.each(venues, function() {
+                //     if (result.response.venues.length > 0) {
+                //         console.log(venues);
+                //         // Populates content of window with the following:
+                //         infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
+                //         + location.info + '</div>' + address + '</div>');
+                //         infowindow.open(map, location.marker); // Opens infowindow at marker location.
+                //     } else {
+                //         alert('Sorry, no venues found.');
+                //     }
+
+                //     if (this.venue.location.address) {
+                //         address = '<p>'+this.venue.location.address+'<br>';
+                //     } else {
+                //         address = '';
+                //     }
+                
+                // });
 
                 // foursquareLocationObject = result.response.venues[0];
                 // if (result.response.venues.length > 0) {
                     
                 //     console.log(foursquareLocationObject);
-                    // Populates content of window with the following:
-                    infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
-                     + location.info + '</div>' + venues + '</div>');
-                    
-                    infowindow.open(map, location.marker); // Opens infowindow at marker location.        
+                            
                 // } else {
-                //     alert('Sorry, no venues found.');
+                //     
                 // }
             },
             error: function(error) {
