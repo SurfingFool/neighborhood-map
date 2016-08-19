@@ -71,6 +71,8 @@ function initMap() {
     // Creates map inside #mapDiv element with mapOptions parameters passed to it.
     map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
+
+
     // Create Google Infowindow object (just one) - empty until window is populated with another function.
     infowindow = new google.maps.InfoWindow({
         maxWidth: 200
@@ -78,7 +80,7 @@ function initMap() {
 
         // Initializes function to create Map Markers
     createMarkers();
-
+    
 } // End of initMap()
 
 
@@ -158,95 +160,35 @@ function populateInfoWindow(location) {
                 client_secret: client_secret,
                 v: 20130815,
                 m: 'foursquare',
-                // near: 'San Marcos, CA'
             },
             async: true,
             // Display content retreived from Foursquare.
             success: function(result) {
-                console.log(result);
-                
-                for (var venue in result.response.venues) {
-                    var address = result.response.venues[venue].location;
-                    if(result.response.venues.hasOwnProperty(venue)) {
-                        var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">'
-                        + location.info + '</div>' + address + '</div>';
+                                
+                var theVenue = result.response.venues[0];
+                var theAddress = theVenue.location.address;
 
-                        infowindow.setContent(infoWindowContent);
-                        infowindow.open(map,location.marker);
-                    }
-                }
+                console.log(theVenue);
+                console.log(theAddress);
 
-                // if (result.response.venues.length > 0) {
-                //     var address = result.response.venues[0].address;
+                var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">'
+                    + location.info + '</div>' + theAddress + '</div>';
 
-                //     var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">'
-                //         + location.info + '</div>' + address + '</div>';
-
-                //     infowindow.setContent(infoWindowContent);
-                //     infowindow.open(map,location.marker);
-                // } else {
-                //         alert('Sorry, no address found.');
-                //     }
-
-
-                // var venues = result.response.hasOwnProperty('venues');
-                // var address = result.response.venues.address;
-                
-                // $.each(venues, function() {
-                //     if (result.response.venues.length > 0) {
-                //         console.log(venues);
-                //         // Populates content of window with the following:
-                //         infowindow.setContent('<div class="locationTitle">' + location.name + '<div class="information">'
-                //         + location.info + '</div>' + address + '</div>');
-                //         infowindow.open(map, location.marker); // Opens infowindow at marker location.
-                //     } else {
-                //         alert('Sorry, no venues found.');
-                //     }
-
-                //     if (this.venue.location.address) {
-                //         address = '<p>'+this.venue.location.address+'<br>';
-                //     } else {
-                //         address = '';
-                //     }
-                
-                // });
-
-                // foursquareLocationObject = result.response.venues[0];
-                // if (result.response.venues.length > 0) {
-                    
-                //     console.log(foursquareLocationObject);
-                            
-                // } else {
-                //     
-                // }
+                // Populates content of window with the following:
+                infowindow.setContent(infoWindowContent);
+                infowindow.open(map,location.marker);
             },
-            error: function(error) {
-                alert('An error has occured.');
-            }
+
+            
+           // error: function(error) {
+            //     alert('Sorry, no venues found.');
+            // }
             
         });
     }
-
     getNewVenues();
-        
-    // This is the object that holds the results data. 
-    // var newVenueData = {
-    //     // name: fsResults[newVenues].location.name,
-    //     name: foursquareLocationObject[newVenuesArray].location.name,
-    //     info: location.info
-    // };
-
-    // // The newLocationData is then passed to an observableArray that
-    // // is used to populate the info window.
-    // var newVenuesArray = [];
-    // function newVenueResults(newVenueData) {
-    //     for (var i = 0; i < newVenuesArray().length; i++) {
-    //         location.push(newVenueData) // Push to locationsObservableArray
-    //     }
-        
-    // };
-
 }
+
 
 /*==== View Model Constructor ====*/
 function viewModel() {
@@ -281,8 +223,14 @@ function viewModel() {
     self.filterSearch = ko.computed(function() {
         // If nothing in search box, show all locations.
         if (!self.searchTerm() || self.searchTerm === undefined) {
+            // location.marker.setVisible();
+            // Show every marker.
+            for (var i = 0; i < self.locationsObservableArray().length; i++) {
+                if (self.locationsObservableArray()[i].marker !== undefined) {
+                    self.locationsObservableArray()[i].marker.setVisible(true); // Shows the marker
+                }
+            }
             return self.locationsObservableArray();
-            location.marker.setVisible();
         } else {
             // So input isn't case sensitive.
             filter = self.searchTerm().toLowerCase();

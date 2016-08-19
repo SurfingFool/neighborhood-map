@@ -13,10 +13,9 @@
 	<div id="container">
 		
 		<div id="sidebar">
-			<h3>Popular Places</h3>
+			<h2>Popular Places</h2>
 			<form action="#" method="GET" id="searchForm">
 				<input data-bind="textInput: searchTerm" id="input" class="controls" type="text" placeholder="Start typing here"/>
-				<input type="submit" name="submit" id="submit" value="search">
 			</form>
 			<ul id="listItems" data-bind="foreach: filterSearch">
 				<li>
@@ -25,7 +24,7 @@
 			</ul>
 		</div>
 		
-		<div id="mapDiv">
+		<div id="mapDiv" onerror="mapError()">
 		</div>
 
 	</div>
