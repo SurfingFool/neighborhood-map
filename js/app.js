@@ -72,7 +72,6 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
 
-
     // Create Google Infowindow object (just one) - empty until window is populated with another function.
     infowindow = new google.maps.InfoWindow({
         maxWidth: 200
@@ -82,6 +81,10 @@ function initMap() {
     createMarkers();
     
 } // End of initMap()
+
+function mapError() {
+    alert('The map could not be loaded.');
+}
 
 
 function createMarkers() {
@@ -247,7 +250,7 @@ function viewModel() {
     });
     
 }
-
+window.onload = mapError;
 // Assign viewModel to a global variable. This creates a new viewModel object and stores
 // it inside the 'vm' variable in order to access viewModel variables using dot notation
 // Example: vm.locationsObservableArray()
