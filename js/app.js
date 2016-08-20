@@ -250,7 +250,7 @@ function viewModel() {
     });
     
 }
-window.onload = mapError;
+
 // Assign viewModel to a global variable. This creates a new viewModel object and stores
 // it inside the 'vm' variable in order to access viewModel variables using dot notation
 // Example: vm.locationsObservableArray()
