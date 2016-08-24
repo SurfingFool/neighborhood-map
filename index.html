@@ -27,7 +27,7 @@
 			</form>
 			<ul id="listItems" data-bind="foreach: filterSearch">
 				<li>
-					<a id="listElem" href="" data-bind="text: name, click: $parent.listItemClick"></a>
+					<a id="listElem" href="" data-bind="text: name, css: {colorChange: currentSelection() = false}, click: $parent.listItemClick"></a>
 				</li> 
 			</ul>
 		</div>

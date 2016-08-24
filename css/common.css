@@ -83,6 +83,10 @@ html, body {
 .hide {display: none;
   }
 
+.colorChange {
+	color: #fd971f;
+}
+
 ul {
 	color: #fff;
 	font-family: Arial, sans-serif;

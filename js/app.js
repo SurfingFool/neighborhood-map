@@ -213,6 +213,7 @@ mapArea.addEventListener('click', function() {
 //     listItem.classList.add("clickedVenue");
 // });
 
+// Hides hamburger menu image on larger screens.
 $(document).ready(
     function() {
     $("img").addClass("hide");
@@ -241,8 +242,14 @@ function viewModel() {
     self.listItemClick = function(marker) {
         console.log(marker);
         google.maps.event.trigger(this.marker, 'click');
+        
     };
 
+    // Add class for clicked list item.
+    var currentVenueItem = {
+        currentSelection: ko.observable(true)
+    };
+    currentVenueItem.currentSelection(false);
     // Knockout handles the following filter: an observable to store users search input
     // Value bound to the DOM using 'textInput' binding and provides string for the
     // textSearch() method.
