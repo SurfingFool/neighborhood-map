@@ -3,17 +3,25 @@
 <head>
 	<title>Neighborhood Map</title>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="css/common.css">
-	
+	<link rel="stylesheet" href="css/common.css" media="screen">
+	<link rel="stylesheet" href="css/under700px.css" media="screen and (max-width:700px)" >
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="js/lib/knockout-3.4.0.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 </head>
 
 <body>
 	<div id="container">
+		<div id="mapHeader">
+			<img id="menu" src="images/menu.png" width="24px" height="18px">
+			<h1>Going Places</h1>
+		</div>
+
+		<div id="mapDiv">
+		</div>
 		
 		<div id="sidebar">
-			<h2>Popular Places</h2>
+			<h2>Dining Out</h2>
 			<form action="#" method="GET" id="searchForm">
 				<input data-bind="textInput: searchTerm" id="input" class="controls" type="text" placeholder="Start typing here"/>
 			</form>
@@ -22,9 +30,6 @@
 					<a id="listElem" href="" data-bind="text: name, click: $parent.listItemClick"></a>
 				</li> 
 			</ul>
-		</div>
-		
-		<div id="mapDiv">
 		</div>
 
 	</div>

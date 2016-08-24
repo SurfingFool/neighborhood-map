@@ -52,7 +52,7 @@ var initialLocations = [{
 
 var map;
 var infowindow;
-var service; // If using google.maps.places.PlacesService().
+// var service; // If using google.maps.places.PlacesService().
 var searchTerm;
 // This is the Google Maps API callback function
 // automatically executed when the Google Maps API finishes loading.
@@ -192,6 +192,31 @@ function populateInfoWindow(location) {
     getNewVenues();
 }
 
+// Adaptation to smaller screen sizes.
+
+var menu = document.getElementById('menu');
+var mapArea = document.getElementById('mapDiv');
+var slider = document.getElementById('sidebar');
+var listItem = document.getElementById('listElem');
+// To show the sidebar
+menu.addEventListener('click', function(e) {
+    slider.classList.toggle('open');
+    e.stopPropagation();
+});
+// To hide the sidebar
+mapArea.addEventListener('click', function() {
+    slider.classList.remove('open');
+});
+
+// // To change color of clicked list item.
+// listItem.addEventListener('click', function() {
+//     listItem.classList.add("clickedVenue");
+// });
+
+$(document).ready(
+    function() {
+    $("img").addClass("hide");
+});
 
 /*==== View Model Constructor ====*/
 function viewModel() {
