@@ -4,6 +4,7 @@ function LocationItem(place) {
     this.name = place.name;
     this.location = place.location;
     this.info = place.info;
+    this.currentSelection = ko.observable(false);
 }
 
 var initialLocations = [{
@@ -52,7 +53,7 @@ var initialLocations = [{
 
 var map;
 var infowindow;
-// var service; // If using google.maps.places.PlacesService().
+var currentLocation; // Current clicked location stored here.
 var searchTerm;
 // This is the Google Maps API callback function
 // automatically executed when the Google Maps API finishes loading.
@@ -67,17 +68,14 @@ function initMap() {
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-
     // Creates map inside #mapDiv element with mapOptions parameters passed to it.
     map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
-
 
     // Create Google Infowindow object (just one) - empty until window is populated with another function.
     infowindow = new google.maps.InfoWindow({
         maxWidth: 200
     });
-
-        // Initializes function to create Map Markers
+    // Initializes function to create Map Markers
     createMarkers();
     
 } // End of initMap()
@@ -85,7 +83,6 @@ function initMap() {
 function mapError() {
     alert('The map could not be loaded.');
 }
-
 
 function createMarkers() {
     // Markers.  Iterates through array of locations & places each one on the map.
@@ -107,21 +104,27 @@ function createMarkers() {
 
         // Store the new map marker object inside the location object
         // This creates a new property called 'marker' for each location, which contains all
-        // of the map marker data
+        // of the map marker data.
         location.marker = newMapMarker;
 
         // Create marker event listener, pass 'location' as a parameter
         newMapMarker.addListener('click', (function(location) {
             return function() {
                 console.log(location);
-                // execute 'populateInfoWindow' and pass on the 'location' parameter
+                // Execute 'populateInfoWindow' and pass on the 'location' parameter
                 populateInfoWindow(location);
-
                 toggleBounce(location);
+                // To change color of clicked list item.
+                // Check if previous location object has been clicked. If so, color style not
+                // applied. 
+                if (currentLocation) {
+                currentLocation.currentSelection(false);
+                }
+                // Applies color style to current clicked location.
+                currentLocation = location;
+                location.currentSelection(true);  
             };
-
         })(location));
-
     }
 }
 
@@ -136,9 +139,8 @@ function toggleBounce(location) {
     }
 }
 
-// This function populates infowindow content
-// and opens the infowindow object in this marker location
-// It does not create a new infowindow object
+// This function populates infowindow content and opens the infowindow object in this marker location.
+// It does not create a new infowindow object.
 function populateInfoWindow(location) {
     console.log(location);
     
@@ -147,12 +149,9 @@ function populateInfoWindow(location) {
     var client_secret = 'NNMRABZJDANAI5GCFG2T5TW01EFSGUBHYBDHZEFMXFYPUP5L';
     var fsUrl = 'https://api.foursquare.com/v2/venues/search';
     
-    var foursquareLocationObject
-    
     function getNewVenues () {
         $.ajax({
             // Use this data to update the viewModel, and KO will update UI automatically.
-            
             url: fsUrl,
             dataType: 'json',
             data: {
@@ -174,26 +173,19 @@ function populateInfoWindow(location) {
                 console.log(theVenue);
                 console.log(theAddress);
 
-                var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">'
-                    + location.info + '</div>' + theAddress + '</div>';
+                var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">' + 
+                location.info + '</div>' + theAddress + '</div>';
 
                 // Populates content of window with the following:
                 infowindow.setContent(infoWindowContent);
                 infowindow.open(map,location.marker);
             },
-
-            
-           // error: function(error) {
-            //     alert('Sorry, no venues found.');
-            // }
-            
         });
     }
     getNewVenues();
 }
 
 // Adaptation to smaller screen sizes.
-
 var menu = document.getElementById('menu');
 var mapArea = document.getElementById('mapDiv');
 var slider = document.getElementById('sidebar');
@@ -208,11 +200,6 @@ mapArea.addEventListener('click', function() {
     slider.classList.remove('open');
 });
 
-// // To change color of clicked list item.
-// listItem.addEventListener('click', function() {
-//     listItem.classList.add("clickedVenue");
-// });
-
 // Hides hamburger menu image on larger screens.
 $(document).ready(
     function() {
@@ -222,11 +209,8 @@ $(document).ready(
 /*==== View Model Constructor ====*/
 function viewModel() {
     var self = this;
-
     // Creates an empty observable array.  Also can store returned data from places api.
     self.locationsObservableArray = ko.observableArray();
-
-    var newVenuesArray = ko.observableArray();
 
     var place;
     // Loop over each initial location object
@@ -237,19 +221,11 @@ function viewModel() {
         // Observable Arrays can be used by Knockout to hide / show locations
         self.locationsObservableArray.push(place);
     }
-
     // Listener when list item is clicked and creates info window.
     self.listItemClick = function(marker) {
         console.log(marker);
         google.maps.event.trigger(this.marker, 'click');
-        
     };
-
-    // Add class for clicked list item.
-    var currentVenueItem = {
-        currentSelection: ko.observable(true)
-    };
-    currentVenueItem.currentSelection(false);
     // Knockout handles the following filter: an observable to store users search input
     // Value bound to the DOM using 'textInput' binding and provides string for the
     // textSearch() method.

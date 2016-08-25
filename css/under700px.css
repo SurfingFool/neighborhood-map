@@ -1,148 +1,146 @@
-html, body, #container  {
-	height: 100%;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+html, body, #container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 #container {
-	background-color: #999;
-	max-width: 1200px;
-	min-width: 0;
-	margin: 0 auto;
-	overflow: auto;
+    background-color: #999;
+    max-width: 1200px;
+    min-width: 0;
+    margin: 0 auto;
+    overflow: auto;
 }
 
 #sidebar {
-	width: 180px;
-	height: 100%;
-	background-color: #333;
-	position: absolute;
-	-webkit-transform: translate(-300px, 0);
-	transform: translate(-300px, 0);
-	transition: transform 0.4s ease;
-	text-align: center;
-	
+    width: 180px;
+    height: 100%;
+    background-color: #333;
+    position: absolute;
+    -webkit-transform: translate(-300px, 0);
+    transform: translate(-300px, 0);
+    transition: transform 0.4s ease;
+    text-align: center;
 }
 
 #sidebar.open {
-	-webkit-transform: translate(0, 0);
-	transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
 
 @media screen and (min-width: 700px) {
-	#sidebar {
-		position:relative;
-		transform: translate(0, 0);
-	}
-	body {
-		display: flex;
-	}
-	#mapDiv {
-		width: auto;
-		flex-grow: 1;
-	}
+    #sidebar {
+        position: relative;
+        transform: translate(0, 0);
+    }
+
+    body {
+        display: flex;
+    }
+
+    #mapDiv {
+        width: auto;
+        flex-grow: 1;
+    };
 }
 
 #mapHeader {
-	height: 10%;
-	width: 100%;
-	float: left;
-	background-color: #666;
-	text-align: center;
+    height: 10%;
+    width: 100%;
+    float: left;
+    background-color: #666;
+    text-align: center;
 }
 
 #mapDiv {
-	width: 100%;
-	height: 100%;
-	float: left;
+    width: 100%;
+    height: 100%;
+    float: left;
 }
 
 #input {
-	background-color: #fff;
-	font-family: Roboto;
-	font-size: 15px;
-	width: 80%;
-	min-width: 48px;
-	min-height: 48px;
-	max-width: 300px;
-	margin: 0 auto;
-	padding: 0 11px 0 13px;
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    width: 80%;
+    min-width: 48px;
+    min-height: 48px;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 0 11px 0 13px;
 }
 
 .controls {
-	margin-top: 10px;
-	margin-left: 15px;
-	border: 1px solid #999;
-	border-radius: 5px;
-	height: 32px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    margin-top: 10px;
+    margin-left: 15px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    height: 32px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .placesList {
-	color: #fff;
-	list-style-type: none;
-	margin: 25px 15px;
-	text-align: left;
+    color: #fff;
+    list-style-type: none;
+    margin: 25px 15px;
+    text-align: left;
 }
 
 .locationTitle {
-	text-align: center;
-	font-size: 16px;
-	font-family: Arial, sans-serif;
-	color: #336666;
+    text-align: center;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    color: #336666;
 }
 
 .information {
-	text-align: center;
-	font-size: 12px;
-	color: #111;
+    text-align: center;
+    font-size: 12px;
+    color: #111;
 }
 
-.clickedVenue {
-	color: #fd971f;
+.colorChange {
+    color: #fd971f;
 }
-
-
 
 img {
-	border: 0;
-	margin: 20px 20px 0 5px;
-	display: inline-block;
+    border: 0;
+    margin: 20px 20px 0 5px;
+    display: inline-block;
 }
 
 ul {
-	color: #fff;
-	font-family: Arial, sans-serif;
-	font-size: 12px;
-	margin-left: 14%;
-	padding-left: 5%;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin-left: 14%;
+    padding-left: 5%;
 }
 
 li {
-	margin: 5px 5% 5px 0;
-	padding: 5px 10% 5px 0;
-	text-align: left;
+    margin: 5px 5% 5px 0;
+    padding: 5px 10% 5px 0;
+    text-align: left;
 }
 
 a {
-	color: #fff;
-	font-family: Arial, sans-serif;
-	font-size: 16px;
-	margin-left: 5%;
-	padding-left: 0;
-	text-decoration: none;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    margin-left: 5%;
+    padding-left: 0;
+    text-decoration: none;
 }
 
 p, h1, h2, h3 {
-	font-family: Arial, sans-serif;
-	color: #fff;
+    font-family: Arial, sans-serif;
+    color: #fff;
 }
 
 h1 {
-	display: inline;
-	font-size: 200%;
+    display: inline;
+    font-size: 200%;
 }
-

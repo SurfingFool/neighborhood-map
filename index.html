@@ -3,7 +3,7 @@
 <head>
 	<title>Neighborhood Map</title>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="css/common.css" media="screen">
+	<!--<link rel="stylesheet" href="css/common.css" media="screen">-->
 	<link rel="stylesheet" href="css/under700px.css" media="screen and (max-width:700px)" >
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="js/lib/knockout-3.4.0.js"></script>
@@ -27,7 +27,7 @@
 			</form>
 			<ul id="listItems" data-bind="foreach: filterSearch">
 				<li>
-					<a id="listElem" href="" data-bind="text: name, css: {colorChange: currentSelection() = false}, click: $parent.listItemClick"></a>
+					<a id="listElem" href="" data-bind="text: name, css: {colorChange: currentSelection}, click: $parent.listItemClick"></a>
 				</li> 
 			</ul>
 		</div>
