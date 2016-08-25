@@ -114,7 +114,7 @@ function createMarkers() {
                 // Execute 'populateInfoWindow' and pass on the 'location' parameter
                 populateInfoWindow(location);
                 toggleBounce(location);
-                // To change color of clicked list item.
+                // To change color of clicked list item using KO CSS binding: http://knockoutjs.com/documentation/css-binding.html.
                 // Check if previous location object has been clicked. If so, color style not
                 // applied. 
                 if (currentLocation) {
@@ -127,7 +127,7 @@ function createMarkers() {
         })(location));
     }
 }
-
+// Marker Animation: https://developers.google.com/maps/documentation/javascript/examples/marker-animations
 function toggleBounce(location) {
     if (location.marker.getAnimation() !== null) {
         location.marker.setAnimation(null);
