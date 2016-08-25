@@ -13,4 +13,4 @@ You can change the look of the map, its predefined locations, as well as the inf
 * [Foursquare Documentation](https://developer.foursquare.com/start)
 
 ### License
-Copywrite 2016 - Brett Ludwick
+copyright &copy; 2016 by Brett Ludwick
