@@ -77,6 +77,8 @@ function initMap() {
     });
     // Initializes function to create Map Markers
     createMarkers();
+
+    ko.applyBindings(vm);
     
 } // End of initMap()
 
@@ -118,7 +120,7 @@ function createMarkers() {
                 // Check if previous location object has been clicked. If so, color style not
                 // applied. 
                 if (currentLocation) {
-                currentLocation.currentSelection(false);
+                    currentLocation.currentSelection(false);
                 }
                 // Applies color style to current clicked location.
                 currentLocation = location;
@@ -127,6 +129,7 @@ function createMarkers() {
         })(location));
     }
 }
+
 // Marker Animation: https://developers.google.com/maps/documentation/javascript/examples/marker-animations
 function toggleBounce(location) {
     if (location.marker.getAnimation() !== null) {
@@ -164,6 +167,7 @@ function populateInfoWindow(location) {
                 m: 'foursquare',
             },
             async: true,
+
             // Display content retreived from Foursquare.
             success: function(result) {
                                 
@@ -173,13 +177,23 @@ function populateInfoWindow(location) {
                 console.log(theVenue);
                 console.log(theAddress);
 
-                var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">' + 
-                location.info + '</div>' + theAddress + '</div>';
+                if (theVenue == null) {
+                    var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">' + 
+                    location.info + '</div>' + 'NO ADDRESS DATA AVAILABLE.' + '</div>';
+                } else {
+                    var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">' + 
+                    location.info + '</div>' + theAddress + '</div>';
+                }
 
                 // Populates content of window with the following:
                 infowindow.setContent(infoWindowContent);
                 infowindow.open(map,location.marker);
             },
+
+            error: function() {
+                alert('Foursquare request was unsuccessful.')
+                
+            }
         });
     }
     getNewVenues();
@@ -189,25 +203,21 @@ function populateInfoWindow(location) {
 var menu = document.getElementById('menu');
 var mapArea = document.getElementById('mapDiv');
 var slider = document.getElementById('sidebar');
-var listItem = document.getElementById('listElem');
+
 // To show the sidebar
 menu.addEventListener('click', function(e) {
     slider.classList.toggle('open');
     e.stopPropagation();
 });
+
 // To hide the sidebar
 mapArea.addEventListener('click', function() {
     slider.classList.remove('open');
 });
 
-// Hides hamburger menu image on larger screens.
-$(document).ready(
-    function() {
-    $("img").addClass("hide");
-});
 
 /*==== View Model Constructor ====*/
-function viewModel() {
+function ViewModel() {
     var self = this;
     // Creates an empty observable array.  Also can store returned data from places api.
     self.locationsObservableArray = ko.observableArray();
@@ -259,8 +269,7 @@ function viewModel() {
     
 }
 
-// Assign viewModel to a global variable. This creates a new viewModel object and stores
-// it inside the 'vm' variable in order to access viewModel variables using dot notation
+// Assign ViewModel to a global variable. This creates a new ViewModel object and stores
+// it inside the 'vm' variable in order to access ViewModel variables using dot notation
 // Example: vm.locationsObservableArray()
-var vm = new viewModel();
-ko.applyBindings(vm);
+var vm = new ViewModel();

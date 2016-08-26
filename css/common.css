@@ -1,5 +1,5 @@
-html, body {
-	
+html,
+body {
 	margin: 0;
 	padding: 0;
 }
@@ -80,8 +80,9 @@ html, body {
 	color: #111;
 }
 
-.hide {display: none;
-  }
+.hide {
+	display: none;
+}
 
 .colorChange {
 	color: #fd971f;
@@ -110,7 +111,10 @@ a {
 	text-decoration: none;
 }
 
-p, h1, h2, h3 {
+p,
+h1,
+h2,
+h3 {
 	font-family: Arial, sans-serif;
 	color: #fff;
 }

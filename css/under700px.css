@@ -1,4 +1,6 @@
-html, body, #container {
+html,
+body,
+#container {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -106,6 +108,11 @@ html, body, #container {
     color: #fd971f;
 }
 
+.hide {
+    display: inline-block;
+    margin-left: 10%;
+}
+
 img {
     border: 0;
     margin: 20px 20px 0 5px;
@@ -135,12 +142,15 @@ a {
     text-decoration: none;
 }
 
-p, h1, h2, h3 {
+p,
+h1,
+h2,
+h3 {
     font-family: Arial, sans-serif;
     color: #fff;
 }
 
 h1 {
-    display: inline;
+    display: inline-block;
     font-size: 200%;
 }
