@@ -89,6 +89,7 @@ function mapError() {
 function createMarkers() {
     // Markers.  Iterates through array of locations & places each one on the map.
     var location;
+    var bounds = new google.maps.LatLngBounds();
     // Loop over each location in the locationsObservableArray (inside the viewmodel)
     for (var i = 0; i < vm.locationsObservableArray().length; i++) {
         // Store this location object (the current location in the loop) inside a variable
@@ -177,7 +178,7 @@ function populateInfoWindow(location) {
                 console.log(theVenue);
                 console.log(theAddress);
 
-                if (theVenue == null) {
+                if (theVenue === null) {
                     var infoWindowContent = '<div class="locationTitle">' + location.name + '<div class="information">' + 
                     location.info + '</div>' + 'NO ADDRESS DATA AVAILABLE.' + '</div>';
                 } else {
@@ -191,8 +192,7 @@ function populateInfoWindow(location) {
             },
 
             error: function() {
-                alert('Foursquare request was unsuccessful.')
-                
+                alert('Foursquare request was unsuccessful.');
             }
         });
     }
@@ -204,7 +204,7 @@ var menu = document.getElementById('menu');
 var mapArea = document.getElementById('mapDiv');
 var slider = document.getElementById('sidebar');
 
-// To show the sidebar
+//To show the sidebar
 menu.addEventListener('click', function(e) {
     slider.classList.toggle('open');
     e.stopPropagation();
@@ -236,6 +236,8 @@ function ViewModel() {
         console.log(marker);
         google.maps.event.trigger(this.marker, 'click');
     };
+    
+    self.slider = ko.observable();
     // Knockout handles the following filter: an observable to store users search input
     // Value bound to the DOM using 'textInput' binding and provides string for the
     // textSearch() method.
@@ -244,7 +246,6 @@ function ViewModel() {
     self.filterSearch = ko.computed(function() {
         // If nothing in search box, show all locations.
         if (!self.searchTerm() || self.searchTerm === undefined) {
-            // location.marker.setVisible();
             // Show every marker.
             for (var i = 0; i < self.locationsObservableArray().length; i++) {
                 if (self.locationsObservableArray()[i].marker !== undefined) {
@@ -252,6 +253,7 @@ function ViewModel() {
                 }
             }
             return self.locationsObservableArray();
+            
         } else {
             // So input isn't case sensitive.
             filter = self.searchTerm().toLowerCase();
@@ -266,7 +268,6 @@ function ViewModel() {
             });
         } 
     });
-    
 }
 
 // Assign ViewModel to a global variable. This creates a new ViewModel object and stores

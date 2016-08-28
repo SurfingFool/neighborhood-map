@@ -44,7 +44,7 @@ body,
     #mapDiv {
         width: auto;
         flex-grow: 1;
-    };
+    }
 }
 
 #mapHeader {
